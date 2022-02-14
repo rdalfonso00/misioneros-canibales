@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Test1 {
     public static void main(String [] args){
-        Grafo<String> g1 = new Grafo<>();
+        Grafo<String> g1 = new Grafo<>(false);
         ArrayList<String> connected = new ArrayList<>();
         connected.add("B");
         connected.add("C");

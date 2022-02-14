@@ -28,8 +28,9 @@ public class Barco {
     public boolean esValido(){
         if((numMisioneros != 0) && (numMisioneros != N)){
             return numMisioneros == numCanibales;
-        }else
-            return true;
+        }else if(numMisioneros > N || numCanibales > N || numMisioneros < 0 || numCanibales < 0)
+            return false;
+        return true;
     }
     
     public boolean esFinal(){
@@ -43,18 +44,26 @@ public class Barco {
      */
     public static ArrayList<Barco> generarSucesores(Barco barcoInicial){
         ArrayList<Barco> lista = new ArrayList<>();
-        int nMisio = 0, nCani = 0;
+        int nMisioneros, nCanibales;
         for (int i = 0; i <= 2; i++) {
             for (int j = 0; j <= 2; j++){
                 if(i == 0 && j == 0)
                     continue;
                 if(i+j > 2)
                     break;
-                int mul = barcoInicial.getEstadoBarco() ? -1 : 1;
-                Barco bTemp = new Barco(barcoInicial.getNumCanibales()-j*mul, 
-                                barcoInicial.getNumMisioneros()-i*mul, 
-                                N-barcoInicial.getNumCanibales()+j*mul, 
-                                N-barcoInicial.getNumMisioneros()+i*mul, 
+                nMisioneros = i;
+                nCanibales = j;
+                int dirBarco = barcoInicial.getEstadoBarco() ? 1 : -1;
+                /*Barco bTemp = new Barco(barcoInicial.getNumCanibales()-j*dirBarco, 
+                                barcoInicial.getNumMisioneros()-i*dirBarco, 
+                                N-barcoInicial.getNumCanibales()+j*dirBarco, 
+                                N-barcoInicial.getNumMisioneros()+i*dirBarco, 
+                                !barcoInicial.getEstadoBarco(), barcoInicial);
+                */
+                Barco bTemp = new Barco(barcoInicial.getNumCanibales()+nCanibales*dirBarco, 
+                                barcoInicial.getNumMisioneros()+nMisioneros*dirBarco, 
+                                N-(barcoInicial.getNumCanibales()+nCanibales*dirBarco), 
+                                N-(barcoInicial.getNumMisioneros()+nMisioneros*dirBarco), 
                                 !barcoInicial.getEstadoBarco(), barcoInicial);
                 if(bTemp.esValido())
                     lista.add(bTemp);
@@ -113,6 +122,18 @@ public class Barco {
             return false;
         }
         return numMisioneros==b.getNumMisioneros() && numCanibales==b.getNumCanibales() && numMisionerosBarco==b.getNumMisionerosBarco() && numCanibalesBarco==b.numCanibalesBarco;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        final Barco b = (Barco) obj;
+        return numMisioneros==b.getNumMisioneros() && numCanibales==b.getNumCanibales() && numMisionerosBarco==b.getNumMisionerosBarco() && numCanibalesBarco==b.getNumCanibalesBarco() && estadoBarco==b.getEstadoBarco();
     }
 
     private boolean getEstadoBarco() {
