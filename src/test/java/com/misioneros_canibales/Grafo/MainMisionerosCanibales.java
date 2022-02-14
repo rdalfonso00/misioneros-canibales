@@ -51,7 +51,7 @@ public class MainMisionerosCanibales {
             }
             listaTemp.clear();
             if(fin){
-                g.eliminarRepetidos(); //esto se va a evitar cambiando la definición del grafo a no dirigido
+                g.eliminarRepetidos(); //esto todavia no sé como evitarlo, pero es un fix facil
                 return g;
             }
         }
