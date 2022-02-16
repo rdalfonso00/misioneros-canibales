@@ -3,7 +3,9 @@ package com.misioneros_canibales.Grafo;
 import com.misioneros_canibales.Arbol.Nodo;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -201,7 +203,7 @@ public class Grafo<T> { //T = tipo de las aristas
 
     public void DFS(T inicio, T destino) {
         if (this != null && inicio != null && destino != null) {
-            List<T> lista = new ArrayList<>();
+            List<T> lista = new ArrayList<>(); // lista de vertices visitados
             esFin = false;
             DFSRecursion(inicio, lista, destino);
         }
@@ -213,16 +215,39 @@ public class Grafo<T> { //T = tipo de las aristas
             return;
         }
         lista.add(actual); // visitar vertice
-        System.out.println(actual + " ");
-        if (actual.equals(destino)) { // caso base
-            System.out.println("Se encontró el fin :)");
+        System.out.println(actual);
+        if (actual.equals(destino)) { // caso final
             esFin = true;
             return;
         }
         for (T t : listaAdyacencia.get(actual)) {
             if (!lista.contains(t)) { // si no ha sido visitado
-                lista.add(t);
                 DFSRecursion(t, lista, destino);
+            }
+        }
+    }
+
+    public void BFS(T inicio, T fin) {
+        if (this == null || inicio == null || fin == null) {
+            System.out.println("Error en la inicialización de la búsqueda");
+            return;
+        }
+        Queue<T> cola = new LinkedList<T>();
+        List<T> listaVisitados = new ArrayList<>(); // visitar el inicio
+        cola.add(inicio);
+        listaVisitados.add(inicio);
+        while (cola.peek() != null) {   // mientras la cola no esté vacía
+            T actual = cola.poll();
+            System.out.println(actual);
+            if (actual.equals(fin)) {   // punto de salida si se encuentra el fin
+                System.out.println("Se encontró el fin :)");
+                break;
+            }
+            for (T t : listaAdyacencia.get(actual)) {
+                if (!listaVisitados.contains(t)) {  // si no ha sido visitado
+                    listaVisitados.add(t);          // visita y
+                    cola.add(t);                    // encola
+                }
             }
         }
     }
