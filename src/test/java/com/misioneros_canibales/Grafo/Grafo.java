@@ -197,25 +197,32 @@ public class Grafo<T> { //T = tipo de las aristas
          */
     }
 
-    public void DFS(T inicio, T fin) {
-        if (this != null && inicio != null && fin != null) {
+    static boolean esFin; // bandera para comprobar si se encontró el nodo que se busca y no hallar caminos de más
+
+    public void DFS(T inicio, T destino) {
+        if (this != null && inicio != null && destino != null) {
             List<T> lista = new ArrayList<>();
-            DFSRecursion(inicio, lista, fin);
+            esFin = false;
+            DFSRecursion(inicio, lista, destino);
         }
 
     }
 
-    public void DFSRecursion(T actual, List<T> lista, T fin) {
+    public void DFSRecursion(T actual, List<T> lista, T destino) {
+        if (esFin) {
+            return;
+        }
         lista.add(actual); // visitar vertice
         System.out.println(actual + " ");
-        if (actual.equals(fin)) { // caso base
+        if (actual.equals(destino)) { // caso base
             System.out.println("Se encontró el fin :)");
+            esFin = true;
             return;
         }
         for (T t : listaAdyacencia.get(actual)) {
             if (!lista.contains(t)) { // si no ha sido visitado
                 lista.add(t);
-                DFSRecursion(t, lista, fin);
+                DFSRecursion(t, lista, destino);
             }
         }
     }
